@@ -24,12 +24,12 @@ AS65 Assembler for R6502 [1.42].  Copyright 1994-2007, Frank A. Kingswood       
                         ; This program is designed to test all opcodes of a 6502 emulator using all
                         ; addressing modes with focus on propper setting of the processor status
                         ; register bits.
-                        ; 
+                        ;
                         ; version 05-jan-2020
                         ; contact info at http://2m5.de or email K@2m5.de
                         ;
                         ; assembled with AS65 written by Frank A. Kingswood
-                        ; The assembler as65_142.zip can be obtained from my GitHub repository 
+                        ; The assembler as65_142.zip can be obtained from my GitHub repository
                         ; command line switches: -l -m -s2 -w -h0
                         ;                         |  |  |   |  no page headers in listing
                         ;                         |  |  |   wide listing (133 char/col)
@@ -107,11 +107,11 @@ AS65 Assembler for R6502 [1.42].  Copyright 1994-2007, Frank A. Kingswood       
 0050 =                  zero_page = $50
                         
                         ;data_segment memory start address, $7B (123) consecutive Bytes required
-3200 =                  data_segment = $3200  
+3200 =                  data_segment = $3200
                         
                             if (data_segment & $ff) != 0
                                 ERROR ERROR ERROR low byte of data_segment MUST be $00 !!
-                            endif  
+                            endif
                         
                         ;code_segment memory start address, 13.1kB of consecutive space required
                         ;                                   add 2.5 kB if I_flag = 2
@@ -459,7 +459,7 @@ ffff =                  ram_top = -1
                                     trap_ne
                                     plp         ;restore status
                                     endm
-                                    
+                        
                         tst_a       macro       ;testing result in accu & flags
                                     php         ;save flags
                                     cmp #\1     ;test result
@@ -512,7 +512,7 @@ ffff =                  ram_top = -1
                                     cmp \2,y    ;test flags
                                     trap_ne
                                     endm
-                                
+                        
                         tst_z       macro       ;indexed testing result in zp & flags
                                     php         ;save flags
                                     lda zpt
@@ -556,13 +556,13 @@ ffff =                  ram_top = -1
                                     cmp \2,x    ;test flags
                                     trap_ne
                                     endm
-                                    
+                        
                         ; RAM integrity test
                         ;   verifies that none of the previous tests has altered RAM outside of the
                         ;   designated write areas.
                         ;   uses zpt word as indirect pointer, zpt+2 word as checksum
                                 if ram_top > -1
-                        check_ram   macro 
+                        check_ram   macro
                                     cld
                                     lda #0
                                     sta zpt         ;set low byte of indirect pointer
@@ -597,7 +597,7 @@ ffff =                  ram_top = -1
                                     lda zpt+3       ;checksum high is
                                     cmp ram_chksm+1 ;checksum high expected
                                     trap_ne         ;checksum mismatch
-                                    endm            
+                                    endm
                                 else
                         check_ram   macro
                                     ;RAM check disabled - RAM size not set
@@ -625,7 +625,7 @@ ffff =                  ram_top = -1
 0051 =                  irq_x   ds  1               ;x register
                             if I_flag = 2
                         ;masking for I bit in status
-                        flag_I_on   ds  1           ;or mask to load flags   
+                        flag_I_on   ds  1           ;or mask to load flags
                         flag_I_off  ds  1           ;and mask to load flags
                             endif
 0052 =                  zpt                         ;6 bytes store/modify test area
@@ -640,7 +640,7 @@ ffff =                  ram_top = -1
 0059 =                  zp_bss
 0059 =                  zps     db  $80,1           ;additional shift pattern to test zero result & flag
 005b =                  zp1     db  $c3,$82,$41,0   ;test patterns for LDx BIT ROL ROR ASL LSR
-005f =                  zp7f    db  $7f             ;test pattern for compare  
+005f =                  zp7f    db  $7f             ;test pattern for compare
                         ;logical zeropage operands
 0060 =                  zpOR    db  0,$1f,$71,$80   ;test pattern for OR
 0064 =                  zpAN    db  $0f,$ff,$7f,$80 ;test pattern for AND
@@ -675,7 +675,7 @@ ffff =                  ram_top = -1
 009e =                  adiy2   dw  ada2-$ff        ;with offset for indirect indexed
 00a0 =                  sbiy2   dw  sba2-$ff
 00a2 =                  zp_bss_end
-                           
+                        
 3200 =                          org data_segment
 3200 =                  test_case   ds  1           ;current test number
 3201 =                  ram_chksm   ds  2           ;checksum for RAM integrity test
@@ -717,8 +717,8 @@ ffff =                  ram_top = -1
 3233 =                  rRORc   db  $c0,$80,$e1,$c1,$a0,$80 ;expected result ROR +carry
 3239 =                  fASL                                ;expected flags for shifts
 3239 =                  fROL    db  fzc,0,fnc,fc,fn,fz      ;no carry in
-323f =                  fROLc   db  fc,0,fnc,fc,fn,0        ;carry in 
-3245 =                  fLSR 
+323f =                  fROLc   db  fc,0,fnc,fc,fn,0        ;carry in
+3245 =                  fLSR
 3245 =                  fROR    db  0,fzc,fc,0,fc,fz        ;no carry in
 324b =                  fRORc   db  fn,fnc,fnc,fn,fnc,fn    ;carry in
                         ;increments (decrements)
@@ -751,12 +751,12 @@ ffff =                  ram_top = -1
                             if I_flag = 1
                                 sei
                             endif
-                            
+                        
                         ;initialize I/O for report channel
                             if report = 1
 3409 : 207674                   jsr report_init
                             endif
-                            
+                        
                         ;pretest small branch offset
 340c : a205                     ldx #5
 340e : 4c3634                   jmp psb_test
@@ -803,7 +803,7 @@ ffff =                  ram_top = -1
 3438 : 208574          >        jsr report_error
                         
 343b :                  psb_fwok
-                                
+                        
                         ;initialize BSS segment
                             if load_data_direct != 1
 343b : a248                     ldx #zp_end-zp_init-1
@@ -834,10 +834,10 @@ ffff =                  ram_top = -1
                                 eor #lo(~4)     ;reverse
                                 sta flag_I_off  ;and mask
                             endif
-                                
+                        
                         ;generate checksum for RAM integrity test
                             if ram_top > -1
-                                lda #0 
+                                lda #0
                                 sta zpt         ;set low byte of indirect pointer
                                 sta ram_chksm+1 ;checksum high byte
                               if disable_selfmod = 0
@@ -866,7 +866,7 @@ ffff =                  ram_top = -1
                                 bne gcs5
                                 sta ram_chksm   ;checksum complete
                             endif
-                                next_test            
+                                next_test
 3450 : ad0032          >            lda test_case   ;previous test
 3453 : c900            >            cmp #test_num
                        >            trap_ne         ;test is out of sequence
@@ -907,7 +907,7 @@ ffff =                  ram_top = -1
 3475 : 8d0135                   sta range_adr   ;load into test target
 3478 : a900                     lda #0          ;should set zero flag in status register
 347a : 4c0035                   jmp range_op
-                                
+                        
 347d : ca                       dex             ; offset landing zone - backward branch too far
 347e : ca                       dex
 347f : ca                       dex
@@ -1191,7 +1191,7 @@ ffff =                  ram_top = -1
 3593 : ea                       nop
 3594 : ea                       nop
 3595 : c000                     cpy #0
-3597 : f003                     beq range_end   
+3597 : f003                     beq range_end
 3599 : 4c6134                   jmp range_loop
 359c :                  range_end               ;range test successful
                             endif
@@ -1214,12 +1214,12 @@ ffff =                  ram_top = -1
                         ;partial test BNE & CMP, CPX, CPY immediate
 35ab : c001                     cpy #1          ;testing BNE true
 35ad : d003                     bne test_bne
-                                trap 
+                                trap
 35af : 208574          >        jsr report_error
                         
 35b2 :                  test_bne
-35b2 : a900                     lda #0 
-35b4 : c900                     cmp #0          ;test compare immediate 
+35b2 : a900                     lda #0
+35b4 : c900                     cmp #0          ;test compare immediate
                                 trap_ne
 35b6 : f003            >        beq skip0013
                        >        trap            ;failed not equal (non zero)
@@ -1242,7 +1242,7 @@ ffff =                  ram_top = -1
 35c5 :                 >skip0017
                         
 35c5 : c901                     cmp #1
-                                trap_eq 
+                                trap_eq
 35c7 : d003            >        bne skip0019
                        >        trap           ;failed equal (zero)
 35c9 : 208574          >        jsr report_error
@@ -1263,7 +1263,7 @@ ffff =                  ram_top = -1
                        >
 35d6 :                 >skip0023
                         
-35d6 : aa                       tax 
+35d6 : aa                       tax
 35d7 : e000                     cpx #0          ;test compare x immediate
                                 trap_ne
 35d9 : f003            >        beq skip0025
@@ -1287,7 +1287,7 @@ ffff =                  ram_top = -1
 35e8 :                 >skip0029
                         
 35e8 : e001                     cpx #1
-                                trap_eq 
+                                trap_eq
 35ea : d003            >        bne skip0031
                        >        trap           ;failed equal (zero)
 35ec : 208574          >        jsr report_error
@@ -1308,7 +1308,7 @@ ffff =                  ram_top = -1
                        >
 35f9 :                 >skip0035
                         
-35f9 : a8                       tay 
+35f9 : a8                       tay
 35fa : c000                     cpy #0          ;test compare y immediate
                                 trap_ne
 35fc : f003            >        beq skip0037
@@ -1332,7 +1332,7 @@ ffff =                  ram_top = -1
 360b :                 >skip0041
                         
 360b : c001                     cpy #1
-                                trap_eq 
+                                trap_eq
 360d : d003            >        bne skip0043
                        >        trap           ;failed equal (zero)
 360f : 208574          >        jsr report_error
@@ -1369,7 +1369,7 @@ ffff =                  ram_top = -1
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
                         ;testing stack operations PHA PHP PLA PLP
-                                    
+                        
 362b : a2ff                     ldx #$ff        ;initialize stack
 362d : 9a                       txs
 362e : a955                     lda #$55
@@ -1458,23 +1458,23 @@ ffff =                  ram_top = -1
 367c : 901c                     bcc nbr3
 367e : d01d                     bne nbr4
 3680 : 3003                     bmi br1         ;branches should be taken
-                                trap 
+                                trap
 3682 : 208574          >        jsr report_error
                         
 3685 : 7003             br1     bvs br2
-                                trap 
+                                trap
 3687 : 208574          >        jsr report_error
                         
 368a : b003             br2     bcs br3
-                                trap 
+                                trap
 368c : 208574          >        jsr report_error
                         
 368f : f00f             br3     beq br4
-                                trap 
+                                trap
 3691 : 208574          >        jsr report_error
                         
 3694 :                  nbr1
-                                trap            ;previous bpl taken 
+                                trap            ;previous bpl taken
 3694 : 208574          >        jsr report_error
                         
 3697 :                  nbr2
@@ -1531,35 +1531,35 @@ ffff =                  ram_top = -1
 36c1 : b01c                     bcs nbr13
 36c3 : f01d                     beq nbr14
 36c5 : 1003                     bpl br11        ;branches should be taken
-                                trap 
+                                trap
 36c7 : 208574          >        jsr report_error
                         
 36ca : 5003             br11    bvc br12
-                                trap 
+                                trap
 36cc : 208574          >        jsr report_error
                         
 36cf : 9003             br12    bcc br13
-                                trap 
+                                trap
 36d1 : 208574          >        jsr report_error
                         
 36d4 : d00f             br13    bne br14
-                                trap 
+                                trap
 36d6 : 208574          >        jsr report_error
                         
 36d9 :                  nbr11
-                                trap            ;previous bmi taken 
+                                trap            ;previous bmi taken
 36d9 : 208574          >        jsr report_error
                         
 36dc :                  nbr12
-                                trap            ;previous bvs taken 
+                                trap            ;previous bvs taken
 36dc : 208574          >        jsr report_error
                         
 36df :                  nbr13
-                                trap            ;previous bcs taken 
+                                trap            ;previous bcs taken
 36df : 208574          >        jsr report_error
                         
 36e2 :                  nbr14
-                                trap            ;previous beq taken 
+                                trap            ;previous beq taken
 36e2 : 208574          >        jsr report_error
                         
 36e5 : 08               br14    php
@@ -2278,7 +2278,7 @@ ffff =                  ram_top = -1
 3947 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                         
+                        
                         ; partial pretest EOR #
                                 set_a $3c,0
                        >            load_flag 0
@@ -2481,7 +2481,7 @@ ffff =                  ram_top = -1
 39ef : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
+                        
                         ; jump absolute
                                 set_stat $0
                        >            load_flag $0
@@ -2505,7 +2505,7 @@ ffff =                  ram_top = -1
                         
 3a06 : e8                       inx
 3a07 : e8                       inx
-3a08 :                  far_ret 
+3a08 :                  far_ret
                                 trap_eq         ;returned flags OK?
 3a08 : d003            >        bne skip0301
                        >        trap           ;failed equal (zero)
@@ -2643,7 +2643,7 @@ ffff =                  ram_top = -1
 3a78 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
+                        
                         ; jump indirect
                                 set_stat 0
                        >            load_flag 0
@@ -2666,7 +2666,7 @@ ffff =                  ram_top = -1
                         
 3a8e : 88                       dey
 3a8f : 88                       dey
-3a90 :                  ind_ret 
+3a90 :                  ind_ret
 3a90 : 08                       php             ;either SP or Y count will fail, if we do not hit
 3a91 : 88                       dey
 3a92 : 88                       dey
@@ -3013,7 +3013,7 @@ ffff =                  ram_top = -1
 3bb1 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                         
+                        
                         ; test set and clear flags CLC CLI CLD CLV SEC SEI SED
                                 set_stat $ff
                        >            load_flag $ff
@@ -3184,12 +3184,12 @@ ffff =                  ram_top = -1
 3c26 : 28              >            plp         ;restore status
                         
 3c27 : 18                       clc
-                                tst_stat 0  
+                                tst_stat 0
 3c28 : 08              >            php         ;save status
 3c29 : 68              >            pla         ;use stack to retrieve status
 3c2a : 48              >            pha
-                       >            cmp_flag 0  
-3c2b : c930            >            cmp #(0  |fao)&m8    ;expected flags + always on bits
+                       >            cmp_flag 0
+3c2b : c930            >            cmp #(0|fao)&m8    ;expected flags + always on bits
                        >
                        >            trap_ne
 3c2d : f003            >        beq skip0448
@@ -3235,7 +3235,7 @@ ffff =                  ram_top = -1
                        >
 3c4a : 28              >            plp         ;restore status
                         
-                            endif  
+                            endif
 3c4b : f8                       sed
                                 tst_stat decmode
 3c4c : 08              >            php         ;save status
@@ -3254,12 +3254,12 @@ ffff =                  ram_top = -1
 3c56 : 28              >            plp         ;restore status
                         
 3c57 : d8                       cld
-                                tst_stat 0  
+                                tst_stat 0
 3c58 : 08              >            php         ;save status
 3c59 : 68              >            pla         ;use stack to retrieve status
 3c5a : 48              >            pha
-                       >            cmp_flag 0  
-3c5b : c930            >            cmp #(0  |fao)&m8    ;expected flags + always on bits
+                       >            cmp_flag 0
+3c5b : c930            >            cmp #(0|fao)&m8    ;expected flags + always on bits
                        >
                        >            trap_ne
 3c5d : f003            >        beq skip0464
@@ -3326,7 +3326,7 @@ ffff =                  ram_top = -1
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
                         ; testing index register increment/decrement and transfer
-                        ; INX INY DEX DEY TAX TXA TAY TYA 
+                        ; INX INY DEX DEY TAX TXA TAY TYA
 3c8d : a2fe                     ldx #$fe
                                 set_stat $ff
                        >            load_flag $ff
@@ -3860,7 +3860,7 @@ ffff =                  ram_top = -1
                        >
 3e1e : 28              >            plp         ;restore status
                         
-                                        
+                        
 3e1f : a2ff                     ldx #$ff
                                 set_stat $ff
                        >            load_flag $ff
@@ -4038,7 +4038,7 @@ ffff =                  ram_top = -1
                        >
 3ea6 : 28              >            plp         ;restore status
                         
-                                                
+                        
 3ea7 : a0ff                     ldy #$ff
                                 set_stat $ff
                        >            load_flag $ff
@@ -4223,7 +4223,7 @@ ffff =                  ram_top = -1
 3f31 : 48                       pha
 3f32 : a2ff                     ldx #$ff        ;ff
 3f34 : 8a                       txa
-3f35 : 28                       plp             
+3f35 : 28                       plp
 3f36 : a8                       tay
                                 tst_y $ff,$ff-zero
 3f37 : 08              >            php         ;save flags
@@ -4594,7 +4594,7 @@ ffff =                  ram_top = -1
 405b : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                             
+                        
                         ;TSX sets NZ - TXS does not
                         ;  This section also tests for proper stack wrap around.
 405e : a201                     ldx #1          ;01
@@ -4713,7 +4713,7 @@ ffff =                  ram_top = -1
                                 cmp_flag 0
 40bb : c930            >            cmp #(0|fao)&m8    ;expected flags + always on bits
                         
-                                
+                        
 40bd : a201                     ldx #1
 40bf : 9a                       txs             ;sp=01
                                 set_stat $ff
@@ -4800,7 +4800,7 @@ ffff =                  ram_top = -1
                        >
 4105 :                 >skip0813
                         
-                                
+                        
 4105 : a201                     ldx #1
 4107 : 9a                       txs             ;sp=01
                                 set_stat 0
@@ -4903,11 +4903,11 @@ ffff =                  ram_top = -1
 415a : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
+                        
                         ; testing index register load & store LDY LDX STY STX all addressing modes
                         ; LDX / STX - zp,y / abs,y
 415d : a003                     ldy #3
-415f :                  tldx    
+415f :                  tldx
                                 set_stat 0
                        >            load_flag 0
 415f : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -4944,10 +4944,10 @@ ffff =                  ram_top = -1
 4183 :                 >skip0844
                         
 4183 : 88                       dey
-4184 : 10d9                     bpl tldx                  
+4184 : 10d9                     bpl tldx
                         
 4186 : a003                     ldy #3
-4188 :                  tldx1   
+4188 :                  tldx1
                                 set_stat $ff
                        >            load_flag $ff
 4188 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -4984,10 +4984,10 @@ ffff =                  ram_top = -1
 41ac :                 >skip0851
                         
 41ac : 88                       dey
-41ad : 10d9                     bpl tldx1                  
+41ad : 10d9                     bpl tldx1
                         
 41af : a003                     ldy #3
-41b1 :                  tldx2   
+41b1 :                  tldx2
                                 set_stat 0
                        >            load_flag 0
 41b1 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -5025,10 +5025,10 @@ ffff =                  ram_top = -1
 41d6 :                 >skip0858
                         
 41d6 : 88                       dey
-41d7 : 10d8                     bpl tldx2                  
+41d7 : 10d8                     bpl tldx2
                         
 41d9 : a003                     ldy #3
-41db :                  tldx3   
+41db :                  tldx3
                                 set_stat $ff
                        >            load_flag $ff
 41db : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -5067,7 +5067,7 @@ ffff =                  ram_top = -1
                         
 4200 : 88                       dey
 4201 : 10d8                     bpl tldx3
-                                
+                        
 4203 : a003                     ldy #3      ;testing store result
 4205 : a200                     ldx #0
 4207 : b95200           tstx    lda zpt,y
@@ -5080,7 +5080,7 @@ ffff =                  ram_top = -1
                        >
 4214 :                 >skip0867
                         
-4214 : 9652                     stx zpt,y   ;clear                
+4214 : 9652                     stx zpt,y   ;clear
 4216 : b90332                   lda abst,y
 4219 : 49c3                     eor #$c3
 421b : d91832                   cmp abs1,y
@@ -5092,7 +5092,7 @@ ffff =                  ram_top = -1
 4223 :                 >skip0869
                         
 4223 : 8a                       txa
-4224 : 990332                   sta abst,y  ;clear                
+4224 : 990332                   sta abst,y  ;clear
 4227 : 88                       dey
 4228 : 10dd                     bpl tstx
                                 next_test
@@ -5110,7 +5110,7 @@ ffff =                  ram_top = -1
 4236 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
+                        
                         ; indexed wraparound test (only zp should wrap)
 4239 : a0fd                     ldy #3+$fa
 423b : b661             tldx4   ldx zp1-$fa&$ff,y   ;wrap on indexed zp
@@ -5118,13 +5118,13 @@ ffff =                  ram_top = -1
 423e : 990931                   sta abst-$fa,y      ;no STX abs,y!
 4241 : 88                       dey
 4242 : c0fa                     cpy #$fa
-4244 : b0f5                     bcs tldx4                  
+4244 : b0f5                     bcs tldx4
 4246 : a0fd                     ldy #3+$fa
 4248 : be1e31           tldx5   ldx abs1-$fa,y      ;no wrap on indexed abs
 424b : 9658                     stx zpt-$fa&$ff,y
 424d : 88                       dey
 424e : c0fa                     cpy #$fa
-4250 : b0f6                     bcs tldx5                  
+4250 : b0f6                     bcs tldx5
 4252 : a003                     ldy #3      ;testing wraparound result
 4254 : a200                     ldx #0
 4256 : b95200           tstx1   lda zpt,y
@@ -5136,7 +5136,7 @@ ffff =                  ram_top = -1
                        >
 4261 :                 >skip0874
                         
-4261 : 9652                     stx zpt,y   ;clear                
+4261 : 9652                     stx zpt,y   ;clear
 4263 : b90332                   lda abst,y
 4266 : d91832                   cmp abs1,y
                                 trap_ne     ;store to abs data
@@ -5147,7 +5147,7 @@ ffff =                  ram_top = -1
 426e :                 >skip0876
                         
 426e : 8a                       txa
-426f : 990332                   sta abst,y  ;clear                
+426f : 990332                   sta abst,y  ;clear
 4272 : 88                       dey
 4273 : 10e1                     bpl tstx1
                                 next_test
@@ -5165,10 +5165,10 @@ ffff =                  ram_top = -1
 4281 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
+                        
                         ; LDY / STY - zp,x / abs,x
 4284 : a203                     ldx #3
-4286 :                  tldy    
+4286 :                  tldy
                                 set_stat 0
                        >            load_flag 0
 4286 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -5205,10 +5205,10 @@ ffff =                  ram_top = -1
 42aa :                 >skip0886
                         
 42aa : ca                       dex
-42ab : 10d9                     bpl tldy                  
+42ab : 10d9                     bpl tldy
                         
 42ad : a203                     ldx #3
-42af :                  tldy1   
+42af :                  tldy1
                                 set_stat $ff
                        >            load_flag $ff
 42af : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -5245,10 +5245,10 @@ ffff =                  ram_top = -1
 42d3 :                 >skip0893
                         
 42d3 : ca                       dex
-42d4 : 10d9                     bpl tldy1                  
+42d4 : 10d9                     bpl tldy1
                         
 42d6 : a203                     ldx #3
-42d8 :                  tldy2   
+42d8 :                  tldy2
                                 set_stat 0
                        >            load_flag 0
 42d8 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -5286,7 +5286,7 @@ ffff =                  ram_top = -1
 42fc :                 >skip0900
                         
 42fc : ca                       dex
-42fd : 10d9                     bpl tldy2                  
+42fd : 10d9                     bpl tldy2
                         
 42ff : a203                     ldx #3
 4301 :                  tldy3
@@ -5341,7 +5341,7 @@ ffff =                  ram_top = -1
                        >
 4337 :                 >skip0909
                         
-4337 : 9452                     sty zpt,x   ;clear                
+4337 : 9452                     sty zpt,x   ;clear
 4339 : bd0332                   lda abst,x
 433c : 49c3                     eor #$c3
 433e : dd1832                   cmp abs1,x
@@ -5353,7 +5353,7 @@ ffff =                  ram_top = -1
 4346 :                 >skip0911
                         
 4346 : 8a                       txa
-4347 : 9d0332                   sta abst,x  ;clear                
+4347 : 9d0332                   sta abst,x  ;clear
 434a : ca                       dex
 434b : 10df                     bpl tsty
                                 next_test
@@ -5379,13 +5379,13 @@ ffff =                  ram_top = -1
 4361 : 9d0931                   sta abst-$fa,x      ;no STX abs,x!
 4364 : ca                       dex
 4365 : e0fa                     cpx #$fa
-4367 : b0f5                     bcs tldy4                  
+4367 : b0f5                     bcs tldy4
 4369 : a2fd                     ldx #3+$fa
 436b : bc1e31           tldy5   ldy abs1-$fa,x      ;no wrap on indexed abs
 436e : 9458                     sty zpt-$fa&$ff,x
 4370 : ca                       dex
 4371 : e0fa                     cpx #$fa
-4373 : b0f6                     bcs tldy5                  
+4373 : b0f6                     bcs tldy5
 4375 : a203                     ldx #3      ;testing wraparound result
 4377 : a000                     ldy #0
 4379 : b552             tsty1   lda zpt,x
@@ -5397,7 +5397,7 @@ ffff =                  ram_top = -1
                        >
 4382 :                 >skip0916
                         
-4382 : 9452                     sty zpt,x   ;clear                
+4382 : 9452                     sty zpt,x   ;clear
 4384 : bd0332                   lda abst,x
 4387 : dd1832                   cmp abs1,x
                                 trap_ne     ;store to abs,x data
@@ -5408,7 +5408,7 @@ ffff =                  ram_top = -1
 438f :                 >skip0918
                         
 438f : 8a                       txa
-4390 : 9d0332                   sta abst,x  ;clear                
+4390 : 9d0332                   sta abst,x  ;clear
 4393 : ca                       dex
 4394 : 10e3                     bpl tsty1
                                 next_test
@@ -5428,9 +5428,9 @@ ffff =                  ram_top = -1
                         
                         
                         ; LDX / STX - zp / abs / #
-                                set_stat 0  
-                       >            load_flag 0  
-43a5 : a900            >            lda #0               ;allow test to change I-flag (no mask)
+                                set_stat 0
+                       >            load_flag 0
+43a5 : a900            >            lda #0             ;allow test to change I-flag (no mask)
                        >
 43a7 : 48              >            pha         ;use stack to load status
 43a8 : 28              >            plp
@@ -5584,13 +5584,13 @@ ffff =                  ram_top = -1
 443b : 48              >            pha         ;use stack to load status
 443c : 28              >            plp
                         
-443d : a65b                     ldx zp1  
+443d : a65b                     ldx zp1
 443f : 08                       php         ;test stores do not alter flags
 4440 : 8a                       txa
 4441 : 49c3                     eor #$c3
 4443 : aa                       tax
 4444 : 28                       plp
-4445 : 8e0332                   stx abst  
+4445 : 8e0332                   stx abst
 4448 : 08                       php         ;flags after load/store sequence
 4449 : 49c3                     eor #$c3
 444b : aa                       tax
@@ -5733,13 +5733,13 @@ ffff =                  ram_top = -1
 44cf : 48              >            pha         ;use stack to load status
 44d0 : 28              >            plp
                         
-44d1 : ae1832                   ldx abs1  
+44d1 : ae1832                   ldx abs1
 44d4 : 08                       php         ;test stores do not alter flags
 44d5 : 8a                       txa
 44d6 : 49c3                     eor #$c3
 44d8 : aa                       tax
 44d9 : 28                       plp
-44da : 8652                     stx zpt  
+44da : 8652                     stx zpt
 44dc : 08                       php         ;flags after load/store sequence
 44dd : 49c3                     eor #$c3
 44df : c55b                     cmp zp1     ;test result
@@ -5878,13 +5878,13 @@ ffff =                  ram_top = -1
 455f : 48              >            pha         ;use stack to load status
 4560 : 28              >            plp
                         
-4561 : ae1832                   ldx abs1  
+4561 : ae1832                   ldx abs1
 4564 : 08                       php         ;test stores do not alter flags
 4565 : 8a                       txa
 4566 : 49c3                     eor #$c3
 4568 : aa                       tax
 4569 : 28                       plp
-456a : 8652                     stx zpt  
+456a : 8652                     stx zpt
 456c : 08                       php         ;flags after load/store sequence
 456d : 49c3                     eor #$c3
 456f : aa                       tax
@@ -6020,9 +6020,9 @@ ffff =                  ram_top = -1
 45f1 :                 >skip1033
                         
                         
-                                set_stat 0  
-                       >            load_flag 0  
-45f1 : a900            >            lda #0               ;allow test to change I-flag (no mask)
+                                set_stat 0
+                       >            load_flag 0
+45f1 : a900            >            lda #0             ;allow test to change I-flag (no mask)
                        >
 45f3 : 48              >            pha         ;use stack to load status
 45f4 : 28              >            plp
@@ -6144,7 +6144,7 @@ ffff =                  ram_top = -1
 465b : 48              >            pha         ;use stack to load status
 465c : 28              >            plp
                         
-465d : a2c3                     ldx #$c3  
+465d : a2c3                     ldx #$c3
 465f : 08                       php
 4660 : ec1832                   cpx abs1    ;test result
                                 trap_ne
@@ -6255,9 +6255,9 @@ ffff =                  ram_top = -1
                         
                         
 46c1 : a200                     ldx #0
-46c3 : a552                     lda zpt  
+46c3 : a552                     lda zpt
 46c5 : 49c3                     eor #$c3
-46c7 : c55b                     cmp zp1  
+46c7 : c55b                     cmp zp1
                                 trap_ne     ;store to zp data
 46c9 : f003            >        beq skip1091
                        >        trap            ;failed not equal (non zero)
@@ -6265,10 +6265,10 @@ ffff =                  ram_top = -1
                        >
 46ce :                 >skip1091
                         
-46ce : 8652                     stx zpt     ;clear                
-46d0 : ad0332                   lda abst  
+46ce : 8652                     stx zpt     ;clear
+46d0 : ad0332                   lda abst
 46d3 : 49c3                     eor #$c3
-46d5 : cd1832                   cmp abs1  
+46d5 : cd1832                   cmp abs1
                                 trap_ne     ;store to abs data
 46d8 : f003            >        beq skip1093
                        >        trap            ;failed not equal (non zero)
@@ -6276,7 +6276,7 @@ ffff =                  ram_top = -1
                        >
 46dd :                 >skip1093
                         
-46dd : 8e0332                   stx abst    ;clear                
+46dd : 8e0332                   stx abst    ;clear
 46e0 : a553                     lda zpt+1
 46e2 : 49c3                     eor #$c3
 46e4 : c55c                     cmp zp1+1
@@ -6287,7 +6287,7 @@ ffff =                  ram_top = -1
                        >
 46eb :                 >skip1095
                         
-46eb : 8653                     stx zpt+1   ;clear                
+46eb : 8653                     stx zpt+1   ;clear
 46ed : ad0432                   lda abst+1
 46f0 : 49c3                     eor #$c3
 46f2 : cd1932                   cmp abs1+1
@@ -6298,7 +6298,7 @@ ffff =                  ram_top = -1
                        >
 46fa :                 >skip1097
                         
-46fa : 8e0432                   stx abst+1  ;clear                
+46fa : 8e0432                   stx abst+1  ;clear
 46fd : a554                     lda zpt+2
 46ff : 49c3                     eor #$c3
 4701 : c55d                     cmp zp1+2
@@ -6309,7 +6309,7 @@ ffff =                  ram_top = -1
                        >
 4708 :                 >skip1099
                         
-4708 : 8654                     stx zpt+2   ;clear                
+4708 : 8654                     stx zpt+2   ;clear
 470a : ad0532                   lda abst+2
 470d : 49c3                     eor #$c3
 470f : cd1a32                   cmp abs1+2
@@ -6320,7 +6320,7 @@ ffff =                  ram_top = -1
                        >
 4717 :                 >skip1101
                         
-4717 : 8e0532                   stx abst+2  ;clear                
+4717 : 8e0532                   stx abst+2  ;clear
 471a : a555                     lda zpt+3
 471c : 49c3                     eor #$c3
 471e : c55e                     cmp zp1+3
@@ -6331,7 +6331,7 @@ ffff =                  ram_top = -1
                        >
 4725 :                 >skip1103
                         
-4725 : 8655                     stx zpt+3   ;clear                
+4725 : 8655                     stx zpt+3   ;clear
 4727 : ad0632                   lda abst+3
 472a : 49c3                     eor #$c3
 472c : cd1b32                   cmp abs1+3
@@ -6342,7 +6342,7 @@ ffff =                  ram_top = -1
                        >
 4734 :                 >skip1105
                         
-4734 : 8e0632                   stx abst+3  ;clear                
+4734 : 8e0632                   stx abst+3  ;clear
                                 next_test
 4737 : ad0032          >            lda test_case   ;previous test
 473a : c913            >            cmp #test_num
@@ -6367,13 +6367,13 @@ ffff =                  ram_top = -1
 4748 : 48              >            pha         ;use stack to load status
 4749 : 28              >            plp
                         
-474a : a45b                     ldy zp1  
+474a : a45b                     ldy zp1
 474c : 08                       php         ;test stores do not alter flags
 474d : 98                       tya
 474e : 49c3                     eor #$c3
 4750 : a8                       tay
 4751 : 28                       plp
-4752 : 8c0332                   sty abst  
+4752 : 8c0332                   sty abst
 4755 : 08                       php         ;flags after load/store sequence
 4756 : 49c3                     eor #$c3
 4758 : a8                       tay
@@ -6516,13 +6516,13 @@ ffff =                  ram_top = -1
 47dc : 48              >            pha         ;use stack to load status
 47dd : 28              >            plp
                         
-47de : a45b                     ldy zp1  
+47de : a45b                     ldy zp1
 47e0 : 08                       php         ;test stores do not alter flags
 47e1 : 98                       tya
 47e2 : 49c3                     eor #$c3
 47e4 : a8                       tay
 47e5 : 28                       plp
-47e6 : 8c0332                   sty abst  
+47e6 : 8c0332                   sty abst
 47e9 : 08                       php         ;flags after load/store sequence
 47ea : 49c3                     eor #$c3
 47ec : a8                       tay
@@ -6657,7 +6657,7 @@ ffff =                  ram_top = -1
                        >
 486e :                 >skip1164
                         
-                                
+                        
                                 set_stat 0
                        >            load_flag 0
 486e : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -6665,13 +6665,13 @@ ffff =                  ram_top = -1
 4870 : 48              >            pha         ;use stack to load status
 4871 : 28              >            plp
                         
-4872 : ac1832                   ldy abs1  
+4872 : ac1832                   ldy abs1
 4875 : 08                       php         ;test stores do not alter flags
 4876 : 98                       tya
 4877 : 49c3                     eor #$c3
 4879 : a8                       tay
 487a : 28                       plp
-487b : 8452                     sty zpt  
+487b : 8452                     sty zpt
 487d : 08                       php         ;flags after load/store sequence
 487e : 49c3                     eor #$c3
 4880 : a8                       tay
@@ -6814,13 +6814,13 @@ ffff =                  ram_top = -1
 4904 : 48              >            pha         ;use stack to load status
 4905 : 28              >            plp
                         
-4906 : ac1832                   ldy abs1  
+4906 : ac1832                   ldy abs1
 4909 : 08                       php         ;test stores do not alter flags
 490a : 98                       tya
 490b : 49c3                     eor #$c3
 490d : a8                       tay
 490e : 28                       plp
-490f : 8452                     sty zpt  
+490f : 8452                     sty zpt
 4911 : 08                       php         ;flags after load/store sequence
 4912 : 49c3                     eor #$c3
 4914 : a8                       tay
@@ -6964,7 +6964,7 @@ ffff =                  ram_top = -1
 4998 : 48              >            pha         ;use stack to load status
 4999 : 28              >            plp
                         
-499a : a0c3                     ldy #$c3  
+499a : a0c3                     ldy #$c3
 499c : 08                       php
 499d : cc1832                   cpy abs1    ;test result
                                 trap_ne
@@ -7081,7 +7081,7 @@ ffff =                  ram_top = -1
 4a00 : 48              >            pha         ;use stack to load status
 4a01 : 28              >            plp
                         
-4a02 : a0c3                     ldy #$c3  
+4a02 : a0c3                     ldy #$c3
 4a04 : 08                       php
 4a05 : cc1832                   cpy abs1    ;test result
                                 trap_ne
@@ -7190,11 +7190,11 @@ ffff =                  ram_top = -1
                        >
 4a66 :                 >skip1276
                         
-                                
+                        
 4a66 : a000                     ldy #0
-4a68 : a552                     lda zpt  
+4a68 : a552                     lda zpt
 4a6a : 49c3                     eor #$c3
-4a6c : c55b                     cmp zp1  
+4a6c : c55b                     cmp zp1
                                 trap_ne     ;store to zp   data
 4a6e : f003            >        beq skip1278
                        >        trap            ;failed not equal (non zero)
@@ -7202,10 +7202,10 @@ ffff =                  ram_top = -1
                        >
 4a73 :                 >skip1278
                         
-4a73 : 8452                     sty zpt     ;clear                
-4a75 : ad0332                   lda abst  
+4a73 : 8452                     sty zpt     ;clear
+4a75 : ad0332                   lda abst
 4a78 : 49c3                     eor #$c3
-4a7a : cd1832                   cmp abs1  
+4a7a : cd1832                   cmp abs1
                                 trap_ne     ;store to abs   data
 4a7d : f003            >        beq skip1280
                        >        trap            ;failed not equal (non zero)
@@ -7213,7 +7213,7 @@ ffff =                  ram_top = -1
                        >
 4a82 :                 >skip1280
                         
-4a82 : 8c0332                   sty abst    ;clear                
+4a82 : 8c0332                   sty abst    ;clear
 4a85 : a553                     lda zpt+1
 4a87 : 49c3                     eor #$c3
 4a89 : c55c                     cmp zp1+1
@@ -7224,7 +7224,7 @@ ffff =                  ram_top = -1
                        >
 4a90 :                 >skip1282
                         
-4a90 : 8453                     sty zpt+1   ;clear                
+4a90 : 8453                     sty zpt+1   ;clear
 4a92 : ad0432                   lda abst+1
 4a95 : 49c3                     eor #$c3
 4a97 : cd1932                   cmp abs1+1
@@ -7235,7 +7235,7 @@ ffff =                  ram_top = -1
                        >
 4a9f :                 >skip1284
                         
-4a9f : 8c0432                   sty abst+1  ;clear                
+4a9f : 8c0432                   sty abst+1  ;clear
 4aa2 : a554                     lda zpt+2
 4aa4 : 49c3                     eor #$c3
 4aa6 : c55d                     cmp zp1+2
@@ -7246,7 +7246,7 @@ ffff =                  ram_top = -1
                        >
 4aad :                 >skip1286
                         
-4aad : 8454                     sty zpt+2   ;clear                
+4aad : 8454                     sty zpt+2   ;clear
 4aaf : ad0532                   lda abst+2
 4ab2 : 49c3                     eor #$c3
 4ab4 : cd1a32                   cmp abs1+2
@@ -7257,7 +7257,7 @@ ffff =                  ram_top = -1
                        >
 4abc :                 >skip1288
                         
-4abc : 8c0532                   sty abst+2  ;clear                
+4abc : 8c0532                   sty abst+2  ;clear
 4abf : a555                     lda zpt+3
 4ac1 : 49c3                     eor #$c3
 4ac3 : c55e                     cmp zp1+3
@@ -7268,7 +7268,7 @@ ffff =                  ram_top = -1
                        >
 4aca :                 >skip1290
                         
-4aca : 8455                     sty zpt+3   ;clear                
+4aca : 8455                     sty zpt+3   ;clear
 4acc : ad0632                   lda abst+3
 4acf : 49c3                     eor #$c3
 4ad1 : cd1b32                   cmp abs1+3
@@ -7279,7 +7279,7 @@ ffff =                  ram_top = -1
                        >
 4ad9 :                 >skip1292
                         
-4ad9 : 8c0632                   sty abst+3  ;clear                
+4ad9 : 8c0632                   sty abst+3  ;clear
                                 next_test
 4adc : ad0032          >            lda test_case   ;previous test
 4adf : c914            >            cmp #test_num
@@ -7299,7 +7299,7 @@ ffff =                  ram_top = -1
                         ; testing load / store accumulator LDA / STA all addressing modes
                         ; LDA / STA - zp,x / abs,x
 4aeb : a203                     ldx #3
-4aed :                  tldax    
+4aed :                  tldax
                                 set_stat 0
                        >            load_flag 0
 4aed : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -7335,10 +7335,10 @@ ffff =                  ram_top = -1
 4b10 :                 >skip1302
                         
 4b10 : ca                       dex
-4b11 : 10da                     bpl tldax                  
+4b11 : 10da                     bpl tldax
                         
 4b13 : a203                     ldx #3
-4b15 :                  tldax1   
+4b15 :                  tldax1
                                 set_stat $ff
                        >            load_flag $ff
 4b15 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -7374,10 +7374,10 @@ ffff =                  ram_top = -1
 4b38 :                 >skip1309
                         
 4b38 : ca                       dex
-4b39 : 10da                     bpl tldax1                  
+4b39 : 10da                     bpl tldax1
                         
 4b3b : a203                     ldx #3
-4b3d :                  tldax2   
+4b3d :                  tldax2
                                 set_stat 0
                        >            load_flag 0
 4b3d : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -7413,7 +7413,7 @@ ffff =                  ram_top = -1
 4b5f :                 >skip1316
                         
 4b5f : ca                       dex
-4b60 : 10db                     bpl tldax2                  
+4b60 : 10db                     bpl tldax2
                         
 4b62 : a203                     ldx #3
 4b64 :                  tldax3
@@ -7466,7 +7466,7 @@ ffff =                  ram_top = -1
                        >
 4b98 :                 >skip1325
                         
-4b98 : 9452                     sty zpt,x   ;clear                
+4b98 : 9452                     sty zpt,x   ;clear
 4b9a : bd0332                   lda abst,x
 4b9d : 49c3                     eor #$c3
 4b9f : dd1832                   cmp abs1,x
@@ -7478,7 +7478,7 @@ ffff =                  ram_top = -1
 4ba7 :                 >skip1327
                         
 4ba7 : 8a                       txa
-4ba8 : 9d0332                   sta abst,x  ;clear                
+4ba8 : 9d0332                   sta abst,x  ;clear
 4bab : ca                       dex
 4bac : 10df                     bpl tstax
                                 next_test
@@ -7499,7 +7499,7 @@ ffff =                  ram_top = -1
                         
                         ; LDA / STA - (zp),y / abs,y / (zp,x)
 4bbd : a003                     ldy #3
-4bbf :                  tlday    
+4bbf :                  tlday
                                 set_stat 0
                        >            load_flag 0
 4bbf : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -7535,10 +7535,10 @@ ffff =                  ram_top = -1
 4be2 :                 >skip1337
                         
 4be2 : 88                       dey
-4be3 : 10da                     bpl tlday                  
+4be3 : 10da                     bpl tlday
                         
 4be5 : a003                     ldy #3
-4be7 :                  tlday1   
+4be7 :                  tlday1
                                 set_stat $ff
                        >            load_flag $ff
 4be7 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -7574,7 +7574,7 @@ ffff =                  ram_top = -1
 4c0a :                 >skip1344
                         
 4c0a : 88                       dey
-4c0b : 10da                     bpl tlday1                  
+4c0b : 10da                     bpl tlday1
                         
 4c0d : a003                     ldy #3      ;testing store result
 4c0f : a200                     ldx #0
@@ -7589,12 +7589,12 @@ ffff =                  ram_top = -1
 4c1e :                 >skip1346
                         
 4c1e : 8a                       txa
-4c1f : 990332                   sta abst,y  ;clear                
+4c1f : 990332                   sta abst,y  ;clear
 4c22 : 88                       dey
 4c23 : 10ec                     bpl tstay
                         
 4c25 : a003                     ldy #3
-4c27 :                  tlday2   
+4c27 :                  tlday2
                                 set_stat 0
                        >            load_flag 0
 4c27 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -7630,10 +7630,10 @@ ffff =                  ram_top = -1
 4c49 :                 >skip1353
                         
 4c49 : 88                       dey
-4c4a : 10db                     bpl tlday2                  
+4c4a : 10db                     bpl tlday2
                         
 4c4c : a003                     ldy #3
-4c4e :                  tlday3   
+4c4e :                  tlday3
                                 set_stat $ff
                        >            load_flag $ff
 4c4e : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -7670,7 +7670,7 @@ ffff =                  ram_top = -1
                         
 4c70 : 88                       dey
 4c71 : 10db                     bpl tlday3
-                                
+                        
 4c73 : a003                     ldy #3      ;testing store result
 4c75 : a200                     ldx #0
 4c77 : b90332           tstay1  lda abst,y
@@ -7684,13 +7684,13 @@ ffff =                  ram_top = -1
 4c84 :                 >skip1362
                         
 4c84 : 8a                       txa
-4c85 : 990332                   sta abst,y  ;clear                
+4c85 : 990332                   sta abst,y  ;clear
 4c88 : 88                       dey
 4c89 : 10ec                     bpl tstay1
-                                
+                        
 4c8b : a206                     ldx #6
 4c8d : a003                     ldy #3
-4c8f :                  tldax4   
+4c8f :                  tldax4
                                 set_stat 0
                        >            load_flag 0
 4c8f : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -7728,7 +7728,7 @@ ffff =                  ram_top = -1
 4cb1 : ca                       dex
 4cb2 : ca                       dex
 4cb3 : 88                       dey
-4cb4 : 10d9                     bpl tldax4                  
+4cb4 : 10d9                     bpl tldax4
                         
 4cb6 : a206                     ldx #6
 4cb8 : a003                     ldy #3
@@ -7785,7 +7785,7 @@ ffff =                  ram_top = -1
 4cf2 :                 >skip1378
                         
 4cf2 : 8a                       txa
-4cf3 : 990332                   sta abst,y  ;clear                
+4cf3 : 990332                   sta abst,y  ;clear
 4cf6 : 88                       dey
 4cf7 : 10ec                     bpl tstay2
                                 next_test
@@ -7810,14 +7810,14 @@ ffff =                  ram_top = -1
 4d0c : 9d0931                   sta abst-$fa,x      ;no STX abs,x!
 4d0f : ca                       dex
 4d10 : e0fa                     cpx #$fa
-4d12 : b0f6                     bcs tldax6                  
+4d12 : b0f6                     bcs tldax6
 4d14 : a2fd                     ldx #3+$fa
 4d16 : bd1e31           tldax7  lda abs1-$fa,x      ;no wrap on indexed abs
 4d19 : 9558                     sta zpt-$fa&$ff,x
 4d1b : ca                       dex
 4d1c : e0fa                     cpx #$fa
 4d1e : b0f6                     bcs tldax7
-                                                  
+                        
 4d20 : a203                     ldx #3      ;testing wraparound result
 4d22 : a000                     ldy #0
 4d24 : b552             tstax1  lda zpt,x
@@ -7829,7 +7829,7 @@ ffff =                  ram_top = -1
                        >
 4d2d :                 >skip1383
                         
-4d2d : 9452                     sty zpt,x   ;clear                
+4d2d : 9452                     sty zpt,x   ;clear
 4d2f : bd0332                   lda abst,x
 4d32 : dd1832                   cmp abs1,x
                                 trap_ne     ;store to abs,x data
@@ -7840,7 +7840,7 @@ ffff =                  ram_top = -1
 4d3a :                 >skip1385
                         
 4d3a : 8a                       txa
-4d3b : 9d0332                   sta abst,x  ;clear                
+4d3b : 9d0332                   sta abst,x  ;clear
 4d3e : ca                       dex
 4d3f : 10e3                     bpl tstax1
                         
@@ -7865,16 +7865,16 @@ ffff =                  ram_top = -1
 4d60 :                 >skip1387
                         
 4d60 : 8a                       txa
-4d61 : 990332                   sta abst,y  ;clear                
+4d61 : 990332                   sta abst,y  ;clear
 4d64 : 88                       dey
 4d65 : 10ee                     bpl tstay4
-                                
+                        
 4d67 : a0fb                     ldy #3+$f8
 4d69 : b92031           tlday5  lda abs1-$f8,y  ;no wrap on indexed abs
 4d6c : 9180                     sta (inwt),y
 4d6e : 88                       dey
 4d6f : c0f8                     cpy #$f8
-4d71 : b0f6                     bcs tlday5                  
+4d71 : b0f6                     bcs tlday5
 4d73 : a003                     ldy #3      ;testing wraparound result
 4d75 : a200                     ldx #0
 4d77 : b90332           tstay5  lda abst,y
@@ -7887,13 +7887,13 @@ ffff =                  ram_top = -1
 4d82 :                 >skip1389
                         
 4d82 : 8a                       txa
-4d83 : 990332                   sta abst,y  ;clear                
+4d83 : 990332                   sta abst,y  ;clear
 4d86 : 88                       dey
 4d87 : 10ee                     bpl tstay5
                         
 4d89 : a0fb                     ldy #3+$f8
 4d8b : a2fe                     ldx #6+$f8
-4d8d : b176             tlday6  lda (inw1),y    ;no wrap on zp indirect indexed 
+4d8d : b176             tlday6  lda (inw1),y    ;no wrap on zp indirect indexed
 4d8f : 8180                     sta (indt-$f8&$ff,x)
 4d91 : ca                       dex
 4d92 : ca                       dex
@@ -7912,7 +7912,7 @@ ffff =                  ram_top = -1
 4da7 :                 >skip1391
                         
 4da7 : 8a                       txa
-4da8 : 990332                   sta abst,y  ;clear                
+4da8 : 990332                   sta abst,y  ;clear
 4dab : 88                       dey
 4dac : 10ee                     bpl tstay6
                                 next_test
@@ -7932,9 +7932,9 @@ ffff =                  ram_top = -1
                         
                         
                         ; LDA / STA - zp / abs / #
-                                set_stat 0  
-                       >            load_flag 0  
-4dbd : a900            >            lda #0               ;allow test to change I-flag (no mask)
+                                set_stat 0
+                       >            load_flag 0
+4dbd : a900            >            lda #0             ;allow test to change I-flag (no mask)
                        >
 4dbf : 48              >            pha         ;use stack to load status
 4dc0 : 28              >            plp
@@ -8075,11 +8075,11 @@ ffff =                  ram_top = -1
 4e47 : 48              >            pha         ;use stack to load status
 4e48 : 28              >            plp
                         
-4e49 : a55b                     lda zp1  
+4e49 : a55b                     lda zp1
 4e4b : 08                       php         ;test stores do not alter flags
 4e4c : 49c3                     eor #$c3
 4e4e : 28                       plp
-4e4f : 8d0332                   sta abst  
+4e4f : 8d0332                   sta abst
 4e52 : 08                       php         ;flags after load/store sequence
 4e53 : 49c3                     eor #$c3
 4e55 : c9c3                     cmp #$c3    ;test result
@@ -8211,11 +8211,11 @@ ffff =                  ram_top = -1
 4ecf : 48              >            pha         ;use stack to load status
 4ed0 : 28              >            plp
                         
-4ed1 : ad1832                   lda abs1  
+4ed1 : ad1832                   lda abs1
 4ed4 : 08                       php         ;test stores do not alter flags
 4ed5 : 49c3                     eor #$c3
 4ed7 : 28                       plp
-4ed8 : 8552                     sta zpt  
+4ed8 : 8552                     sta zpt
 4eda : 08                       php         ;flags after load/store sequence
 4edb : 49c3                     eor #$c3
 4edd : c55b                     cmp zp1     ;test result
@@ -8347,11 +8347,11 @@ ffff =                  ram_top = -1
 4f57 : 48              >            pha         ;use stack to load status
 4f58 : 28              >            plp
                         
-4f59 : ad1832                   lda abs1  
+4f59 : ad1832                   lda abs1
 4f5c : 08                       php         ;test stores do not alter flags
 4f5d : 49c3                     eor #$c3
 4f5f : 28                       plp
-4f60 : 8552                     sta zpt  
+4f60 : 8552                     sta zpt
 4f62 : 08                       php         ;flags after load/store sequence
 4f63 : 49c3                     eor #$c3
 4f65 : c55b                     cmp zp1     ;test result
@@ -8476,9 +8476,9 @@ ffff =                  ram_top = -1
                        >
 4fdd :                 >skip1506
                         
-                                set_stat 0  
-                       >            load_flag 0  
-4fdd : a900            >            lda #0               ;allow test to change I-flag (no mask)
+                                set_stat 0
+                       >            load_flag 0
+4fdd : a900            >            lda #0             ;allow test to change I-flag (no mask)
                        >
 4fdf : 48              >            pha         ;use stack to load status
 4fe0 : 28              >            plp
@@ -8600,7 +8600,7 @@ ffff =                  ram_top = -1
 5047 : 48              >            pha         ;use stack to load status
 5048 : 28              >            plp
                         
-5049 : a9c3                     lda #$c3  
+5049 : a9c3                     lda #$c3
 504b : 08                       php
 504c : cd1832                   cmp abs1    ;test result
                                 trap_ne
@@ -8711,9 +8711,9 @@ ffff =                  ram_top = -1
                         
                         
 50ad : a200                     ldx #0
-50af : a552                     lda zpt  
+50af : a552                     lda zpt
 50b1 : 49c3                     eor #$c3
-50b3 : c55b                     cmp zp1  
+50b3 : c55b                     cmp zp1
                                 trap_ne     ;store to zp data
 50b5 : f003            >        beq skip1564
                        >        trap            ;failed not equal (non zero)
@@ -8721,10 +8721,10 @@ ffff =                  ram_top = -1
                        >
 50ba :                 >skip1564
                         
-50ba : 8652                     stx zpt     ;clear                
-50bc : ad0332                   lda abst  
+50ba : 8652                     stx zpt     ;clear
+50bc : ad0332                   lda abst
 50bf : 49c3                     eor #$c3
-50c1 : cd1832                   cmp abs1  
+50c1 : cd1832                   cmp abs1
                                 trap_ne     ;store to abs data
 50c4 : f003            >        beq skip1566
                        >        trap            ;failed not equal (non zero)
@@ -8732,7 +8732,7 @@ ffff =                  ram_top = -1
                        >
 50c9 :                 >skip1566
                         
-50c9 : 8e0332                   stx abst    ;clear                
+50c9 : 8e0332                   stx abst    ;clear
 50cc : a553                     lda zpt+1
 50ce : 49c3                     eor #$c3
 50d0 : c55c                     cmp zp1+1
@@ -8743,7 +8743,7 @@ ffff =                  ram_top = -1
                        >
 50d7 :                 >skip1568
                         
-50d7 : 8653                     stx zpt+1   ;clear                
+50d7 : 8653                     stx zpt+1   ;clear
 50d9 : ad0432                   lda abst+1
 50dc : 49c3                     eor #$c3
 50de : cd1932                   cmp abs1+1
@@ -8754,7 +8754,7 @@ ffff =                  ram_top = -1
                        >
 50e6 :                 >skip1570
                         
-50e6 : 8e0432                   stx abst+1  ;clear                
+50e6 : 8e0432                   stx abst+1  ;clear
 50e9 : a554                     lda zpt+2
 50eb : 49c3                     eor #$c3
 50ed : c55d                     cmp zp1+2
@@ -8765,7 +8765,7 @@ ffff =                  ram_top = -1
                        >
 50f4 :                 >skip1572
                         
-50f4 : 8654                     stx zpt+2   ;clear                
+50f4 : 8654                     stx zpt+2   ;clear
 50f6 : ad0532                   lda abst+2
 50f9 : 49c3                     eor #$c3
 50fb : cd1a32                   cmp abs1+2
@@ -8776,7 +8776,7 @@ ffff =                  ram_top = -1
                        >
 5103 :                 >skip1574
                         
-5103 : 8e0532                   stx abst+2  ;clear                
+5103 : 8e0532                   stx abst+2  ;clear
 5106 : a555                     lda zpt+3
 5108 : 49c3                     eor #$c3
 510a : c55e                     cmp zp1+3
@@ -8787,7 +8787,7 @@ ffff =                  ram_top = -1
                        >
 5111 :                 >skip1576
                         
-5111 : 8655                     stx zpt+3   ;clear                
+5111 : 8655                     stx zpt+3   ;clear
 5113 : ad0632                   lda abst+3
 5116 : 49c3                     eor #$c3
 5118 : cd1b32                   cmp abs1+3
@@ -8798,7 +8798,7 @@ ffff =                  ram_top = -1
                        >
 5120 :                 >skip1578
                         
-5120 : 8e0632                   stx abst+3  ;clear                
+5120 : 8e0632                   stx abst+3  ;clear
                                 next_test
 5123 : ad0032          >            lda test_case   ;previous test
 5126 : c918            >            cmp #test_num
@@ -8826,7 +8826,7 @@ ffff =                  ram_top = -1
 5137 : 28              >            plp
                         
 5138 : 245e                     bit zp1+3   ;00 - should set Z / clear  NV
-                                tst_a $ff,fz 
+                                tst_a $ff,fz
 513a : 08              >            php         ;save flags
 513b : c9ff            >            cmp #$ff     ;test result
                        >            trap_ne
@@ -8838,8 +8838,8 @@ ffff =                  ram_top = -1
                        >
 5142 : 68              >            pla         ;load status
 5143 : 48              >            pha
-                       >            cmp_flag fz 
-5144 : c932            >            cmp #(fz |fao)&m8    ;expected flags + always on bits
+                       >            cmp_flag fz
+5144 : c932            >            cmp #(fz|fao)&m8    ;expected flags + always on bits
                        >
                        >            trap_ne
 5146 : f003            >        beq skip1589
@@ -8949,7 +8949,7 @@ ffff =                  ram_top = -1
                        >
 5199 : 28              >            plp         ;restore status
                         
-                                
+                        
                                 set_a $ff,$ff
                        >            load_flag $ff
 519a : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -8959,7 +8959,7 @@ ffff =                  ram_top = -1
 519f : 28              >            plp
                         
 51a0 : 245e                     bit zp1+3   ;00 - should set Z / clear  NV
-                                tst_a $ff,~fnv 
+                                tst_a $ff,~fnv
 51a2 : 08              >            php         ;save flags
 51a3 : c9ff            >            cmp #$ff     ;test result
                        >            trap_ne
@@ -8971,8 +8971,8 @@ ffff =                  ram_top = -1
                        >
 51aa : 68              >            pla         ;load status
 51ab : 48              >            pha
-                       >            cmp_flag ~fnv 
-51ac : c93f            >            cmp #(~fnv |fao)&m8    ;expected flags + always on bits
+                       >            cmp_flag ~fnv
+51ac : c93f            >            cmp #(~fnv|fao)&m8    ;expected flags + always on bits
                        >
                        >            trap_ne
 51ae : f003            >        beq skip1621
@@ -9082,7 +9082,7 @@ ffff =                  ram_top = -1
                        >
 5201 : 28              >            plp         ;restore status
                         
-                                
+                        
                                 set_a $ff,0
                        >            load_flag 0
 5202 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -9092,7 +9092,7 @@ ffff =                  ram_top = -1
 5207 : 28              >            plp
                         
 5208 : 2c1b32                   bit abs1+3  ;00 - should set Z / clear  NV
-                                tst_a $ff,fz 
+                                tst_a $ff,fz
 520b : 08              >            php         ;save flags
 520c : c9ff            >            cmp #$ff     ;test result
                        >            trap_ne
@@ -9104,8 +9104,8 @@ ffff =                  ram_top = -1
                        >
 5213 : 68              >            pla         ;load status
 5214 : 48              >            pha
-                       >            cmp_flag fz 
-5215 : c932            >            cmp #(fz |fao)&m8    ;expected flags + always on bits
+                       >            cmp_flag fz
+5215 : c932            >            cmp #(fz|fao)&m8    ;expected flags + always on bits
                        >
                        >            trap_ne
 5217 : f003            >        beq skip1653
@@ -9215,7 +9215,7 @@ ffff =                  ram_top = -1
                        >
 526d : 28              >            plp         ;restore status
                         
-                                
+                        
                                 set_a $ff,$ff
                        >            load_flag $ff
 526e : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -9225,7 +9225,7 @@ ffff =                  ram_top = -1
 5273 : 28              >            plp
                         
 5274 : 2c1b32                   bit abs1+3  ;00 - should set Z / clear  NV
-                                tst_a $ff,~fnv 
+                                tst_a $ff,~fnv
 5277 : 08              >            php         ;save flags
 5278 : c9ff            >            cmp #$ff     ;test result
                        >            trap_ne
@@ -9237,8 +9237,8 @@ ffff =                  ram_top = -1
                        >
 527f : 68              >            pla         ;load status
 5280 : 48              >            pha
-                       >            cmp_flag ~fnv 
-5281 : c93f            >            cmp #(~fnv |fao)&m8    ;expected flags + always on bits
+                       >            cmp_flag ~fnv
+5281 : c93f            >            cmp #(~fnv|fao)&m8    ;expected flags + always on bits
                        >
                        >            trap_ne
 5283 : f003            >        beq skip1685
@@ -9363,8 +9363,8 @@ ffff =                  ram_top = -1
 52e6 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
-                        ; CPX - zp / abs / #         
+                        
+                        ; CPX - zp / abs / #
                                 set_x $80,0
                        >            load_flag 0
 52e9 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -9797,7 +9797,7 @@ ffff =                  ram_top = -1
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
                         
-                        ; CPY - zp / abs / #         
+                        ; CPY - zp / abs / #
                                 set_y $80,0
                        >            load_flag 0
 5442 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -10230,7 +10230,7 @@ ffff =                  ram_top = -1
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
                         
-                        ; CMP - zp / abs / #         
+                        ; CMP - zp / abs / #
                                 set_a $80,0
                        >            load_flag 0
 559b : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -13729,7 +13729,7 @@ ffff =                  ram_top = -1
 61b3 : 8d0032          >            sta test_case
                        >            ;check_ram       ;uncomment to find altered RAM after each test
                         
-                                
+                        
                         ; shifts - abs indexed
 61b6 : a205                     ldx #5
 61b8 :                  tasl8
@@ -14213,7 +14213,7 @@ ffff =                  ram_top = -1
 63a5 : a200                     ldx #0
 63a7 : a97e                     lda #$7e
 63a9 : 8552                     sta zpt
-63ab :                  tinc    
+63ab :                  tinc
                                 set_stat 0
                        >            load_flag 0
 63ab : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -14255,7 +14255,7 @@ ffff =                  ram_top = -1
 63d2 : d0d7                     bne tinc
 63d4 : ca                       dex
 63d5 : e652                     inc zpt
-63d7 :                  tdec    
+63d7 :                  tdec
                                 set_stat 0
                        >            load_flag 0
 63d7 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -14299,7 +14299,7 @@ ffff =                  ram_top = -1
 6400 : a200                     ldx #0
 6402 : a97e                     lda #$7e
 6404 : 8552                     sta zpt
-6406 :                  tinc10    
+6406 :                  tinc10
                                 set_stat $ff
                        >            load_flag $ff
 6406 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -14341,7 +14341,7 @@ ffff =                  ram_top = -1
 642d : d0d7                     bne tinc10
 642f : ca                       dex
 6430 : e652                     inc zpt
-6432 :                  tdec10    
+6432 :                  tdec10
                                 set_stat $ff
                        >            load_flag $ff
 6432 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -14402,7 +14402,7 @@ ffff =                  ram_top = -1
 646a : a200                     ldx #0
 646c : a97e                     lda #$7e
 646e : 8d0332                   sta abst
-6471 :                  tinc2    
+6471 :                  tinc2
                                 set_stat 0
                        >            load_flag 0
 6471 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -14444,7 +14444,7 @@ ffff =                  ram_top = -1
 649b : d0d4                     bne tinc2
 649d : ca                       dex
 649e : ee0332                   inc abst
-64a1 :                  tdec2    
+64a1 :                  tdec2
                                 set_stat 0
                        >            load_flag 0
 64a1 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -14488,7 +14488,7 @@ ffff =                  ram_top = -1
 64cd : a200                     ldx #0
 64cf : a97e                     lda #$7e
 64d1 : 8d0332                   sta abst
-64d4 :                  tinc12    
+64d4 :                  tinc12
                                 set_stat $ff
                        >            load_flag $ff
 64d4 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -14530,7 +14530,7 @@ ffff =                  ram_top = -1
 64fe : d0d4                     bne tinc12
 6500 : ca                       dex
 6501 : ee0332                   inc abst
-6504 :                  tdec12    
+6504 :                  tdec12
                                 set_stat $ff
                        >            load_flag $ff
 6504 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -14632,7 +14632,7 @@ ffff =                  ram_top = -1
 656c : d0d5                     bne tinc4
 656e : ca                       dex
 656f : a902                     lda #2
-6571 : 9552             tdec4   sta zpt,x 
+6571 : 9552             tdec4   sta zpt,x
                                 set_stat 0
                        >            load_flag 0
 6573 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -14717,7 +14717,7 @@ ffff =                  ram_top = -1
 65c9 : d0d5                     bne tinc14
 65cb : ca                       dex
 65cc : a902                     lda #2
-65ce : 9552             tdec14  sta zpt,x 
+65ce : 9552             tdec14  sta zpt,x
                                 set_stat $ff
                        >            load_flag $ff
 65d0 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -14819,7 +14819,7 @@ ffff =                  ram_top = -1
 6639 : d0d1                     bne tinc6
 663b : ca                       dex
 663c : a902                     lda #2
-663e : 9d0332           tdec6   sta abst,x 
+663e : 9d0332           tdec6   sta abst,x
                                 set_stat 0
                        >            load_flag 0
 6641 : a900            >            lda #0             ;allow test to change I-flag (no mask)
@@ -14904,7 +14904,7 @@ ffff =                  ram_top = -1
 669e : d0d1                     bne tinc16
 66a0 : ca                       dex
 66a1 : a902                     lda #2
-66a3 : 9d0332           tdec16  sta abst,x 
+66a3 : 9d0332           tdec16  sta abst,x
                                 set_stat $ff
                        >            load_flag $ff
 66a6 : a9ff            >            lda #$ff             ;allow test to change I-flag (no mask)
@@ -15037,7 +15037,7 @@ ffff =                  ram_top = -1
                         
 672e : ca                       dex
 672f : 10da                     bpl tand1
-                            
+                        
 6731 : a203                     ldx #3      ;zp
 6733 : b564             tand2   lda zpAN,x
 6735 : 8552                     sta zpt
@@ -15649,7 +15649,7 @@ ffff =                  ram_top = -1
                         
 6989 : ca                       dex
 698a : 10da                     bpl teor1
-                            
+                        
 698c : a203                     ldx #3      ;zp
 698e : b568             teor2    lda zpEO,x
 6990 : 8552                     sta zpt
@@ -15798,7 +15798,7 @@ ffff =                  ram_top = -1
                        >
                         
 6a25 : ca                       dex
-6a26 : 1002                     bpl teor6
+6a26 : 10da                     bpl teor5
                         
 6a28 : a203                     ldx #3      ;zp,x
 6a2a :                  teor6
@@ -16261,7 +16261,7 @@ ffff =                  ram_top = -1
                         
 6be4 : ca                       dex
 6be5 : 10da                     bpl tora1
-                            
+                        
 6be7 : a203                     ldx #3      ;zp
 6be9 : b560             tora2   lda zpOR,x
 6beb : 8552                     sta zpt
@@ -16784,7 +16784,7 @@ ffff =                  ram_top = -1
 6de1 : 10e0                     bpl tora15
                             if I_flag = 3
 6de3 : 58                       cli
-                            endif                
+                            endif
                                 next_test
 6de4 : ad0032          >            lda test_case   ;previous test
 6de7 : c928            >            cmp #test_num
@@ -16847,7 +16847,7 @@ ffff =                  ram_top = -1
 6e3f : 8557                     sta adrf        ;no need to check carry as we are adding to 0
 6e41 : c658                     dec sb2         ;complement subtract operand 2
 6e43 : ce0432                   dec sba2
-6e46 : a554                     lda ad2         
+6e46 : a554                     lda ad2
 6e48 : 8555                     sta adrl
 6e4a : d0c6                     bne tadd        ;iterate op2
                             if disable_decimal < 1
@@ -16872,7 +16872,7 @@ ffff =                  ram_top = -1
                         ;   only valid BCD operands are tested, N V Z flags are ignored
                         ; iterates through all valid combinations of operands and carry input
                         ; uses increments/decrements to predict result & carry flag
-6e5b : f8                       sed 
+6e5b : f8                       sed
 6e5c : a254                     ldx #ad2        ;for indexed test
 6e5e : a0ff                     ldy #$ff        ;max range
 6e60 : a999                     lda #$99        ;start with adding 99 to 99 with carry
@@ -17042,7 +17042,7 @@ ffff =                  ram_top = -1
 6f54 :                 >skip3341
                         
 6f54 : 40                       rti
-6f55 :                  bin_rti_ret        
+6f55 :                  bin_rti_ret
 6f55 : a955                     lda #$55
 6f57 : 6955                     adc #$55
 6f59 : c9aa                     cmp #$aa
@@ -17054,7 +17054,7 @@ ffff =                  ram_top = -1
 6f60 :                 >skip3343
                         
                             endif
-                            
+                        
 6f60 : ad0032                   lda test_case
 6f63 : c92b                     cmp #test_num
                                 trap_ne         ;previous test is out of sequence
@@ -17066,7 +17066,7 @@ ffff =                  ram_top = -1
                         
 6f6a : a9f0                     lda #$f0        ;mark opcode testing complete
 6f6c : 8d0032                   sta test_case
-                                
+                        
                         ; final RAM integrity test
                         ;   verifies that none of the previous tests has altered RAM outside of the
                         ;   designated write areas.
@@ -17081,13 +17081,13 @@ ffff =                  ram_top = -1
                         
                         
                         ; S U C C E S S ************************************************
-                        ; -------------       
+                        ; -------------
                                 success         ;if you get here everything went well
 6f6f : 204e75          >        jsr report_success
                         
-                        ; -------------       
+                        ; -------------
                         ; S U C C E S S ************************************************
-6f72 : 4c0034                   jmp start       ;run again      
+6f72 : 4c0034                   jmp start       ;run again
                         
                             if disable_decimal < 1
                         ; core subroutine of the decimal add/subtract test
@@ -17100,7 +17100,7 @@ ffff =                  ram_top = -1
 6f75 : 08                       php             ;save carry for subtract
 6f76 : a553                     lda ad1
 6f78 : 6554                     adc ad2         ;perform add
-6f7a : 08                       php          
+6f7a : 08                       php
 6f7b : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 6f7d : f003            >        beq skip3349
@@ -17123,7 +17123,7 @@ ffff =                  ram_top = -1
 6f8d : 08                       php             ;save carry for next add
 6f8e : a553                     lda ad1
 6f90 : e558                     sbc sb2         ;perform subtract
-6f92 : 08                       php          
+6f92 : 08                       php
 6f93 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 6f95 : f003            >        beq skip3353
@@ -17147,7 +17147,7 @@ ffff =                  ram_top = -1
 6fa5 : 08                       php             ;save carry for subtract
 6fa6 : a553                     lda ad1
 6fa8 : 6d0332                   adc ada2        ;perform add
-6fab : 08                       php          
+6fab : 08                       php
 6fac : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 6fae : f003            >        beq skip3357
@@ -17170,7 +17170,7 @@ ffff =                  ram_top = -1
 6fbe : 08                       php             ;save carry for next add
 6fbf : a553                     lda ad1
 6fc1 : ed0432                   sbc sba2        ;perform subtract
-6fc4 : 08                       php          
+6fc4 : 08                       php
 6fc5 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 6fc7 : f003            >        beq skip3361
@@ -17196,7 +17196,7 @@ ffff =                  ram_top = -1
 6fda : 8d1332                   sta ex_adci+1   ;set ADC # operand
 6fdd : a553                     lda ad1
 6fdf : 201232                   jsr ex_adci     ;execute ADC # in RAM
-6fe2 : 08                       php          
+6fe2 : 08                       php
 6fe3 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 6fe5 : f003            >        beq skip3365
@@ -17221,7 +17221,7 @@ ffff =                  ram_top = -1
 6ff8 : 8d1632                   sta ex_sbci+1   ;set SBC # operand
 6ffb : a553                     lda ad1
 6ffd : 201532                   jsr ex_sbci     ;execute SBC # in RAM
-7000 : 08                       php          
+7000 : 08                       php
 7001 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7003 : f003            >        beq skip3369
@@ -17245,7 +17245,7 @@ ffff =                  ram_top = -1
 7013 : 08                       php             ;save carry for subtract
 7014 : a553                     lda ad1
 7016 : 7500                     adc 0,x         ;perform add
-7018 : 08                       php          
+7018 : 08                       php
 7019 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 701b : f003            >        beq skip3373
@@ -17268,7 +17268,7 @@ ffff =                  ram_top = -1
 702b : 08                       php             ;save carry for next add
 702c : a553                     lda ad1
 702e : f504                     sbc sb2-ad2,x   ;perform subtract
-7030 : 08                       php          
+7030 : 08                       php
 7031 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7033 : f003            >        beq skip3377
@@ -17292,7 +17292,7 @@ ffff =                  ram_top = -1
 7043 : 08                       php             ;save carry for subtract
 7044 : a553                     lda ad1
 7046 : 7daf31                   adc ada2-ad2,x  ;perform add
-7049 : 08                       php          
+7049 : 08                       php
 704a : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 704c : f003            >        beq skip3381
@@ -17315,7 +17315,7 @@ ffff =                  ram_top = -1
 705c : 08                       php             ;save carry for next add
 705d : a553                     lda ad1
 705f : fdb031                   sbc sba2-ad2,x  ;perform subtract
-7062 : 08                       php          
+7062 : 08                       php
 7063 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7065 : f003            >        beq skip3385
@@ -17339,7 +17339,7 @@ ffff =                  ram_top = -1
 7075 : 08                       php             ;save carry for subtract
 7076 : a553                     lda ad1
 7078 : 790431                   adc ada2-$ff,y  ;perform add
-707b : 08                       php          
+707b : 08                       php
 707c : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 707e : f003            >        beq skip3389
@@ -17362,7 +17362,7 @@ ffff =                  ram_top = -1
 708e : 08                       php             ;save carry for next add
 708f : a553                     lda ad1
 7091 : f90531                   sbc sba2-$ff,y  ;perform subtract
-7094 : 08                       php          
+7094 : 08                       php
 7095 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7097 : f003            >        beq skip3393
@@ -17386,7 +17386,7 @@ ffff =                  ram_top = -1
 70a7 : 08                       php             ;save carry for subtract
 70a8 : a553                     lda ad1
 70aa : 6146                     adc (lo adi2-ad2,x) ;perform add
-70ac : 08                       php          
+70ac : 08                       php
 70ad : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 70af : f003            >        beq skip3397
@@ -17409,7 +17409,7 @@ ffff =                  ram_top = -1
 70bf : 08                       php             ;save carry for next add
 70c0 : a553                     lda ad1
 70c2 : e148                     sbc (lo sbi2-ad2,x) ;perform subtract
-70c4 : 08                       php          
+70c4 : 08                       php
 70c5 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 70c7 : f003            >        beq skip3401
@@ -17433,7 +17433,7 @@ ffff =                  ram_top = -1
 70d7 : 08                       php             ;save carry for subtract
 70d8 : a553                     lda ad1
 70da : 719e                     adc (adiy2),y   ;perform add
-70dc : 08                       php          
+70dc : 08                       php
 70dd : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 70df : f003            >        beq skip3405
@@ -17456,7 +17456,7 @@ ffff =                  ram_top = -1
 70ef : 08                       php             ;save carry for next add
 70f0 : a553                     lda ad1
 70f2 : f1a0                     sbc (sbiy2),y   ;perform subtract
-70f4 : 08                       php          
+70f4 : 08                       php
 70f5 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 70f7 : f003            >        beq skip3409
@@ -17500,7 +17500,7 @@ ffff =                  ram_top = -1
 7120 : 08                       php             ;save carry for subtract
 7121 : a553                     lda ad1
 7123 : 6554                     adc ad2         ;perform add
-7125 : 08                       php          
+7125 : 08                       php
 7126 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7128 : f003            >        beq skip3413
@@ -17523,7 +17523,7 @@ ffff =                  ram_top = -1
 7138 : 08                       php             ;save carry for next add
 7139 : a553                     lda ad1
 713b : e558                     sbc sb2         ;perform subtract
-713d : 08                       php          
+713d : 08                       php
 713e : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7140 : f003            >        beq skip3417
@@ -17547,7 +17547,7 @@ ffff =                  ram_top = -1
 7150 : 08                       php             ;save carry for subtract
 7151 : a553                     lda ad1
 7153 : 6d0332                   adc ada2        ;perform add
-7156 : 08                       php          
+7156 : 08                       php
 7157 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7159 : f003            >        beq skip3421
@@ -17570,7 +17570,7 @@ ffff =                  ram_top = -1
 7169 : 08                       php             ;save carry for next add
 716a : a553                     lda ad1
 716c : ed0432                   sbc sba2        ;perform subtract
-716f : 08                       php          
+716f : 08                       php
 7170 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7172 : f003            >        beq skip3425
@@ -17596,7 +17596,7 @@ ffff =                  ram_top = -1
 7185 : 8d1332                   sta ex_adci+1   ;set ADC # operand
 7188 : a553                     lda ad1
 718a : 201232                   jsr ex_adci     ;execute ADC # in RAM
-718d : 08                       php          
+718d : 08                       php
 718e : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7190 : f003            >        beq skip3429
@@ -17621,7 +17621,7 @@ ffff =                  ram_top = -1
 71a3 : 8d1632                   sta ex_sbci+1   ;set SBC # operand
 71a6 : a553                     lda ad1
 71a8 : 201532                   jsr ex_sbci     ;execute SBC # in RAM
-71ab : 08                       php          
+71ab : 08                       php
 71ac : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 71ae : f003            >        beq skip3433
@@ -17645,7 +17645,7 @@ ffff =                  ram_top = -1
 71be : 08                       php             ;save carry for subtract
 71bf : a553                     lda ad1
 71c1 : 7500                     adc 0,x         ;perform add
-71c3 : 08                       php          
+71c3 : 08                       php
 71c4 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 71c6 : f003            >        beq skip3437
@@ -17668,7 +17668,7 @@ ffff =                  ram_top = -1
 71d6 : 08                       php             ;save carry for next add
 71d7 : a553                     lda ad1
 71d9 : f504                     sbc sb2-ad2,x   ;perform subtract
-71db : 08                       php          
+71db : 08                       php
 71dc : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 71de : f003            >        beq skip3441
@@ -17692,7 +17692,7 @@ ffff =                  ram_top = -1
 71ee : 08                       php             ;save carry for subtract
 71ef : a553                     lda ad1
 71f1 : 7daf31                   adc ada2-ad2,x  ;perform add
-71f4 : 08                       php          
+71f4 : 08                       php
 71f5 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 71f7 : f003            >        beq skip3445
@@ -17715,7 +17715,7 @@ ffff =                  ram_top = -1
 7207 : 08                       php             ;save carry for next add
 7208 : a553                     lda ad1
 720a : fdb031                   sbc sba2-ad2,x  ;perform subtract
-720d : 08                       php          
+720d : 08                       php
 720e : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7210 : f003            >        beq skip3449
@@ -17739,7 +17739,7 @@ ffff =                  ram_top = -1
 7220 : 08                       php             ;save carry for subtract
 7221 : a553                     lda ad1
 7223 : 790431                   adc ada2-$ff,y  ;perform add
-7226 : 08                       php          
+7226 : 08                       php
 7227 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7229 : f003            >        beq skip3453
@@ -17762,7 +17762,7 @@ ffff =                  ram_top = -1
 7239 : 08                       php             ;save carry for next add
 723a : a553                     lda ad1
 723c : f90531                   sbc sba2-$ff,y  ;perform subtract
-723f : 08                       php          
+723f : 08                       php
 7240 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7242 : f003            >        beq skip3457
@@ -17786,7 +17786,7 @@ ffff =                  ram_top = -1
 7252 : 08                       php             ;save carry for subtract
 7253 : a553                     lda ad1
 7255 : 6146                     adc (lo adi2-ad2,x) ;perform add
-7257 : 08                       php          
+7257 : 08                       php
 7258 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 725a : f003            >        beq skip3461
@@ -17809,7 +17809,7 @@ ffff =                  ram_top = -1
 726a : 08                       php             ;save carry for next add
 726b : a553                     lda ad1
 726d : e148                     sbc (lo sbi2-ad2,x) ;perform subtract
-726f : 08                       php          
+726f : 08                       php
 7270 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 7272 : f003            >        beq skip3465
@@ -17833,7 +17833,7 @@ ffff =                  ram_top = -1
 7282 : 08                       php             ;save carry for subtract
 7283 : a553                     lda ad1
 7285 : 719e                     adc (adiy2),y   ;perform add
-7287 : 08                       php          
+7287 : 08                       php
 7288 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 728a : f003            >        beq skip3469
@@ -17856,7 +17856,7 @@ ffff =                  ram_top = -1
 729a : 08                       php             ;save carry for next add
 729b : a553                     lda ad1
 729d : f1a0                     sbc (sbiy2),y   ;perform subtract
-729f : 08                       php          
+729f : 08                       php
 72a0 : c555                     cmp adrl        ;check result
                                 trap_ne         ;bad result
 72a2 : f003            >        beq skip3473
@@ -17908,7 +17908,7 @@ ffff =                  ram_top = -1
                        >
 72c9 :                 >skip3481
                         
-                                trap_eq 
+                                trap_eq
 72c9 : d003            >        bne skip3483
                        >        trap           ;failed equal (zero)
 72cb : 208574          >        jsr report_error
@@ -17924,7 +17924,7 @@ ffff =                  ram_top = -1
 72d5 :                 >skip3485
                         
 72d5 : e041                     cpx #'A'
-                                trap_ne        
+                                trap_ne
 72d7 : f003            >        beq skip3487
                        >        trap            ;failed not equal (non zero)
 72d9 : 208574          >        jsr report_error
@@ -17964,7 +17964,7 @@ ffff =                  ram_top = -1
 72f5 : e8                       inx             ;return registers with modifications
 72f6 : 49aa                     eor #$aa        ;N=1, V=1, Z=0, C=1
 72f8 : 4c083a                   jmp far_ret
-                                
+                        
                         ; target for the jump indirect test
 72fb : 00                       align
 72fc : 0573             ptr_tst_ind dw test_ind
@@ -18001,7 +18001,7 @@ ffff =                  ram_top = -1
                        >
 7319 :                 >skip3500
                         
-                                trap_eq 
+                                trap_eq
 7319 : d003            >        bne skip3502
                        >        trap           ;failed equal (zero)
 731b : 208574          >        jsr report_error
@@ -18017,7 +18017,7 @@ ffff =                  ram_top = -1
 7325 :                 >skip3504
                         
 7325 : e04e                     cpx #'N'
-                                trap_ne        
+                                trap_ne
 7327 : f003            >        beq skip3506
                        >        trap            ;failed not equal (non zero)
 7329 : 208574          >        jsr report_error
@@ -18092,7 +18092,7 @@ ffff =                  ram_top = -1
                        >
 7367 :                 >skip3519
                         
-                                trap_eq 
+                                trap_eq
 7367 : d003            >        bne skip3521
                        >        trap           ;failed equal (zero)
 7369 : 208574          >        jsr report_error
@@ -18108,7 +18108,7 @@ ffff =                  ram_top = -1
 7373 :                 >skip3523
                         
 7373 : e053                     cpx #'S'
-                                trap_ne        
+                                trap_ne
 7375 : f003            >        beq skip3525
                        >        trap            ;failed not equal (non zero)
 7377 : 208574          >        jsr report_error
@@ -18125,7 +18125,7 @@ ffff =                  ram_top = -1
                         
 7381 : 48                       pha             ;save a,x
 7382 : 8a                       txa
-7383 : 48                       pha       
+7383 : 48                       pha
 7384 : ba                       tsx             ;sp -4? (return addr,a,x)
 7385 : e0fb                     cpx #$fb
                                 trap_ne
@@ -18170,7 +18170,7 @@ ffff =                  ram_top = -1
 73ab : 208574          >        jsr report_error
                         
 73ae : 4c0034                   jmp start       ;catastrophic error - cannot continue
-                                
+                        
                         ;trap in case of unexpected IRQ, NMI, BRK, RESET - BRK test target
 73b1 :                  nmi_trap
                                 trap            ;check stack for conditions at NMI
@@ -18182,7 +18182,7 @@ ffff =                  ram_top = -1
 73b7 : 208574          >        jsr report_error
                         
 73ba : 4c0034                   jmp start       ;catastrophic error - cannot continue
-                                
+                        
 73bd : 88                       dey
 73be : 88                       dey
 73bf :                  irq_trap                ;BRK test or unextpected BRK or IRQ
@@ -18204,7 +18204,7 @@ ffff =                  ram_top = -1
 73ce :                 >skip3540
                         
 73ce : e052                     cpx #'R'
-                                trap_ne        
+                                trap_ne
 73d0 : f003            >        beq skip3542
                        >        trap            ;failed not equal (non zero)
 73d2 : 208574          >        jsr report_error
@@ -18285,10 +18285,10 @@ ffff =                  ram_top = -1
 741b : 208574          >        jsr report_error
                         
 741e : 4c0034                   jmp start       ;catastrophic error - cannot continue
-                                
-7421 :                  break2                  ;BRK pass 2        
+                        
+7421 :                  break2                  ;BRK pass 2
 7421 : e0ad                     cpx #$ff-'R'
-                                trap_ne        
+                                trap_ne
 7423 : f003            >        beq skip3560
                        >        trap            ;failed not equal (non zero)
 7425 : 208574          >        jsr report_error
@@ -18359,7 +18359,7 @@ ffff =                  ram_top = -1
                                 load_flag intdis
 7464 : a904            >            lda #intdis             ;allow test to change I-flag (no mask)
                         
-7466 : 48                       pha      
+7466 : 48                       pha
 7467 : a651                     ldx irq_x
 7469 : e8                       inx             ;return registers with modifications
 746a : a550                     lda irq_a
@@ -18644,7 +18644,7 @@ ffee =                  OSWRCH = $FFEE
                             endif
                            
                             endif
-                                
+                        
                         ;copy of data to initialize BSS segment
                             if load_data_direct != 1
 7620 :                  zp_init
@@ -18685,10 +18685,10 @@ ffee =                  OSWRCH = $FFEE
 7665 : 0431             adiy2_  dw  ada2-$ff        ;with offset for indirect indexed
 7667 : 0531             sbiy2_  dw  sba2-$ff
 7669 :                  zp_end
-                            if (zp_end - zp_init) != (zp_bss_end - zp_bss)   
-                                ;force assembler error if size is different   
+                            if (zp_end - zp_init) != (zp_bss_end - zp_bss)
+                                ;force assembler error if size is different
                                 ERROR ERROR ERROR   ;mismatch between bss and zeropage data
-                            endif 
+                            endif
 7669 :                  data_init
 7669 : 2900             ex_and_ and #0              ;execute immediate opcodes
 766b : 60                       rts
@@ -18714,7 +18714,7 @@ ffee =                  OSWRCH = $FFEE
 7693 : c080e1c1a080     rRORc_  db  $c0,$80,$e1,$c1,$a0,$80 ;expected result ROR +carry
 7699 :                  fASL_                               ;expected flags for shifts
 7699 : 030081018002     fROL_   db  fzc,0,fnc,fc,fn,fz      ;no carry in
-769f : 010081018000     fROLc_  db  fc,0,fnc,fc,fn,0        ;carry in 
+769f : 010081018000     fROLc_  db  fc,0,fnc,fc,fn,0        ;carry in
 76a5 :                  fLSR_
 76a5 : 000301000102     fROR_   db  0,fzc,fc,0,fc,fz        ;no carry in
 76ab : 808181808180     fRORc_  db  fn,fnc,fnc,fn,fnc,fn    ;carry in
@@ -18734,9 +18734,9 @@ ffee =                  OSWRCH = $FFEE
 76d7 : 02800080         absflo_ db  fz,fn,0,fn
 76db :                  data_end
                             if (data_end - data_init) != (data_bss_end - data_bss)
-                                ;force assembler error if size is different   
+                                ;force assembler error if size is different
                                 ERROR ERROR ERROR   ;mismatch between bss and data
-                            endif 
+                            endif
                         
 76db :                  vec_init
 76db : b173                     dw  nmi_trap
@@ -18744,8 +18744,8 @@ ffee =                  OSWRCH = $FFEE
 76df : bf73                     dw  irq_trap
 fffa =                  vec_bss equ $fffa
                             endif                   ;end of RAM init data
-                            
-                            if (load_data_direct = 1) & (ROM_vectors = 1)  
+                        
+                            if (load_data_direct = 1) & (ROM_vectors = 1)
                                 org $fffa       ;vectors
                                 dw  nmi_trap
                                 dw  res_trap
@@ -18753,7 +18753,7 @@ fffa =                  vec_bss equ $fffa
                             endif
                         
 fffa =                          end start
-                                    
+                        
 No errors in pass 2.
 Wrote binary from address $3400 through $76e0.
 Total size 17121 bytes.
