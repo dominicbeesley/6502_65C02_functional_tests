@@ -94,14 +94,14 @@ zero_page = $50
 
 ;data_segment memory start address, $63 (99) consecutive Bytes required
 ; + 12 Bytes at data_segment + $f9 (JMP indirect page cross test)
-data_segment = $3200
+data_segment = BASE
     if (data_segment & $ff) != 0
         ERROR ERROR ERROR low byte of data_segment MUST be $00 !!
     endif  
 
 ;code_segment memory start address, 10kB of consecutive space required
 ;                                   add 1 kB if I_flag = 2
-code_segment = $3400
+code_segment = BASE + $200
 
 ;added WDC only opcodes WAI & STP (0=test as NOPs, >0=no test)
 wdc_op = WDC_OP

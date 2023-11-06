@@ -1,7 +1,7 @@
 AS65 Assembler for R6502 [1.42].  Copyright 1994-2007, Frank A. Kingswood                                                Page    1
 ---------------------------------------------------- 6502_functional_test.a65 ----------------------------------------------------
 
-6346 lines read, no errors in pass 1.
+6347 lines read, no errors in pass 1.
                         ;
                         ; 6 5 0 2   F U N C T I O N A L   T E S T
                         ;
@@ -106,8 +106,9 @@ AS65 Assembler for R6502 [1.42].  Copyright 1994-2007, Frank A. Kingswood       
                         ;                                add 2 if I_flag = 2
 0050 =                  zero_page = $50
                         
+                        
                         ;data_segment memory start address, $7B (123) consecutive Bytes required
-3200 =                  data_segment = $3200
+3200 =                  data_segment = BASE
                         
                             if (data_segment & $ff) != 0
                                 ERROR ERROR ERROR low byte of data_segment MUST be $00 !!
@@ -115,7 +116,7 @@ AS65 Assembler for R6502 [1.42].  Copyright 1994-2007, Frank A. Kingswood       
                         
                         ;code_segment memory start address, 13.1kB of consecutive space required
                         ;                                   add 2.5 kB if I_flag = 2
-3400 =                  code_segment = $3400
+3400 =                  code_segment = BASE+$200
                         
                         ;self modifying code may be disabled to allow running in ROM
                         ;0=part of the code is self modifying and must reside in RAM

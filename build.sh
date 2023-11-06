@@ -1,5 +1,10 @@
 #!/bin/bash
 
+ATOMBASE='3200'
+BEEBBASE='1100'
+
+AS65=./tools/as65/as65.exe
+
 #AS65 Assembler for R6502 [1.42].  Copyright 1994-2007, Frank A. Kingswood
 # 
 # Usage: AS65 [-DIcghilmnopqstuvwxz] file
@@ -32,11 +37,9 @@
 function make_atm_header {
      len=`du -b $1 | awk '{print $1}'`     
      echo -n `basename $1` > hdr
+     local ATOMEXEC=`printf '%x' $((0x$ATOMBASE + 0x200))`
      truncate -s 16 hdr
-     echo -e -n "\x00" >> hdr
-     echo -e -n "\x34" >> hdr
-     echo -e -n "\x00" >> hdr
-     echo -e -n "\x34" >> hdr
+     echo $ATOMEXEC$ATOMEXEC | xxd -r -p >> hdr
      echo -e -n "\x`printf '%x' $(($len & 255))`" >> hdr
      echo -e -n "\x`printf '%x' $(($len / 256))`" >> hdr
      cat $1 >> hdr
@@ -45,7 +48,8 @@ function make_atm_header {
 
 function make_inf_file {
     base=`basename $1`
-    echo -e "\$.$base\t3400\t3400" > $1.inf
+    local BEEBEXEC=`printf '%x' $((0x$BEEBBASE + 0x200))`
+    echo -e "\$.$base\t$BEEBEXEC\t$BEEBEXEC" > $1.inf
 }
 
 
@@ -58,8 +62,10 @@ do
     if [ $TARGET == "1" ]
     then
        DIR=atom
+       BASE="0x$ATOMBASE"
     else
        DIR=beeb
+       BASE="0x$BEEBBASE"
     fi
 
     mkdir -p $DIR
@@ -72,8 +78,10 @@ do
         ./tools/mmb_utils/title.pl $DIR/dormann.ssd Dormann
     fi
     
+    echo '##########'
     BIN=D6502
-    ../as65/as65 -DTARGET=$TARGET -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -h0 6502_functional_test.a65
+    $AS65 -DBASE=$BASE -DTARGET=$TARGET -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -h0 6502_functional_test
+    echo '##########'
 
     if [ $TARGET == "1" ]
     then
@@ -88,7 +96,7 @@ do
         for RKWL_OP in 0 1
         do
             BIN=D65C$WDC_OP$RKWL_OP
-            ../as65/as65 -DTARGET=$TARGET -DWDC_OP=$WDC_OP -DRKWL_OP=$RKWL_OP -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -x -h0 65C02_extended_opcodes_test.a65c
+            $AS65 -DBASE=$BASE -DTARGET=$TARGET -DWDC_OP=$WDC_OP -DRKWL_OP=$RKWL_OP -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -x -h0 65C02_extended_opcodes_test
 
             if [ $TARGET == "1" ]
             then
