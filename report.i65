@@ -1,5 +1,6 @@
 T_ATOM = 1
 T_BEEB = 2
+T_816=3
 
   if (TARGET = T_ATOM)
 OSRDCH = $FFE3
@@ -8,8 +9,15 @@ OSWRCH = $FFF4
     if (TARGET = T_BEEB)
 OSRDCH = $FFE0
 OSWRCH = $FFEE
+
     else
+      if (TARGET = T_816)
+HW_UART_STAT = $D001
+HW_UART_DAT = $D000
+
+      else
 ERROR TARGET must be 1 or 2
+      endif
     endif
   endif
 
@@ -167,16 +175,13 @@ rsuc1   jsr rget
 ;get a character from standard input 
 ;adjust according to the needs in your test environment
 rget                ;get character in A
+  if TARGET = T_816
+        bit HW_UART_STAT
+        bvc rget
+        lda HW_UART_DAT
+  else
         jsr OSRDCH  ;example: OSRDCH on a Beeb/Atom
-;rget1
-;        lda $bff1   ;wait RDRF
-;        and #8
-;        beq rget1
-;not a real ACIA - so RDRF is not checked
-;        lda $bff0   ;read acia rx reg
-;       lda $f004   ;Kowalski simulator default
-;the load can be replaced by a call to a kernal routine
-;        jsr $ffcf   ;example: CHRIN for a C64
+  endif
         cmp #'a'    ;lower case
         bcc rget1
         and #$5f    ;convert to upper case
@@ -210,17 +215,13 @@ rnib    clc         ;report nibble in A
 ;adjust according to the needs in your test environment
 ;register X needs to be preserved!
 rchar               ;report character in A
+  if TARGET = T_816
+rchar1  bit HW_UART_STAT
+        bmi rchar1
+        sta HW_UART_DAT
+  else
         jsr OSWRCH  ;example: OSWRCH on a Beeb/Atom
-;        pha         ;wait TDRF
-;rchar1  lda $bff1
-;        and #$10
-;        beq rchar1
-;        pla
-;not a real ACIA - so TDRF is not checked
-;        sta $bff0   ;write acia tx reg
-;        sta $f001   ;Kowalski simulator default
-;the store can be replaced by a call to a kernal routine
-;        jsr $ffd2   ;example: CHROUT for a C64
+  endif
         rts
 
 rmsg_start

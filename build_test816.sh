@@ -38,8 +38,7 @@ AS65=./tools/as65/as65.exe
 TARGET=3
 
     DIR=test816
-    ROMBASE="0xC000"
-    DATBASE="0x200"
+    BASE="0x300"
     TARGET=3
 
     mkdir -p $DIR
@@ -48,8 +47,13 @@ TARGET=3
     
     echo '##########'
     BIN=D6502
-    $AS65 -DBASE=$BASE -DTARGET=$TARGET -DDATBASE=$DATBASE -DROMBASE=$ROMBASE -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -h0 6502_functional_test
+    $AS65 -DBASE=$BASE -DTARGET=$TARGET -DBASE=$DATBASE -DROMBASE=$ROMBASE -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -h0 6502_functional_test
     cat $DIR/$BIN | hexdump -v -e '/1 "%02x\n"' >$DIR/$BIN.hex
+
+    BIN=D65C02
+    $AS65 -DBASE=$BASE -DTARGET=$TARGET -DWDC_OP=1 -DRKWL_OP=0 -o$DIR/$BIN -l$DIR/$BIN.lst -m -w -x -h0 65C02_extended_opcodes_test
+    cat $DIR/$BIN | hexdump -v -e '/1 "%02x\n"' >$DIR/$BIN.hex
+
 
     echo '##########'
 
